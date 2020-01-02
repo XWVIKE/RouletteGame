@@ -67,27 +67,26 @@ cc.Class({
         let MAX = coinPosition.findIndex((item)=>{
             return angle<item;
         })
-        if(coinPosition.length===0){
-            coinPosition.push(angle);
-            coinPosition.sort((a,b)=>{return a-b});
-            let node = cc.instantiate(this.fuck);
-            node.parent = this.node;
-            let list = position(angle);
-            node.setPosition(list[0],list[1]);
-        }else if(coinPosition.length===1&&coinPosition[0]+20<angle&&coinPosition[0]-20){
-
-        }else if(coinPosition.length>=2&&coinPosition[MIN]+40<coinPosition[MAX]&&angle-coinPosition[MIN]>20&&coinPosition[MAX]-angle>20){
-            console.log(coinPosition)
-            coinPosition.push(angle);
-            coinPosition.sort((a,b)=>{return a-b});
-            let node = cc.instantiate(this.fuck);
-            node.parent = this.node;
-            let list = position(angle);
-            node.setPosition(list[0],list[1]);
+        // console.log(angle+' '+coinPosition[MIN]+ ' ' +coinPosition[MAX]);
+        if(coinPosition.length===0) this.createCoin(coinPosition,angle);
+        
+        if(coinPosition.length===0||
+            coinPosition.length===1&&angle>coinPosition[0]+20&&angle<coinPosition[0]-20||
+            coinPosition.length>=2&&((MAX===-1&&angle>coinPosition[coinPosition.length-1]+20)||(MIN===-1&&angle<coinPosition[0]-20))||
+            coinPosition.length>=2&&coinPosition[MIN]+40<coinPosition[MAX]&&angle-coinPosition[MIN]>20&&coinPosition[MAX]-angle>20
+            ){
         }else{
             console.log(angle)
             console.log(coinPosition)
         }
+    },
+    createCoin(arr,angle){
+            arr.push(angle);
+            arr.sort((a,b)=>{return a-b});
+            let node = cc.instantiate(this.fuck);
+            node.parent = this.node;
+            let list = position(angle);
+            node.setPosition(list[0],list[1]);
     },
     start () {
 

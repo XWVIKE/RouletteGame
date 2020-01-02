@@ -25,7 +25,7 @@ cc.Class({
         this.coin.runAction(cc.moveBy(0,cc.v2(0,-500)));
     },
     move(){
-        console.log('fuck')
+        // console.log('fuck')
         let action = [cc.moveBy(0.5,cc.v2(0,500)),cc.rotateBy(0.5,90)];
         this.coin.runAction(cc.spawn(...action))
     },
