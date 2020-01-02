@@ -11,25 +11,28 @@ function createRandom(min,max){
     return Math.random() * (max - min) + min;
 };
 function position(angle){
-    // angle = 360-angle;
-    console.log(angle)
-    let Quadrant = 1,radius = 222,x = 0,y = 0,deg = 0,list = [];
+    let Quadrant = 1,radius = 180,x = 0,y = 0,deg = 0,list = [];
     if(angle===90||angle===0||angle===180||angle===270||angle===360){
         list = angle===0||angle===360?[0,-222]:angle===90?[222,0]:angle===180?[0,222]:[-222,0];
     }else{
-        if((angle<90&&angle>0)||(angle>-360&&angle<-270)) {Quadrant = 2;deg = 90-angle};
-        if((angle<180&&angle>90)||(angle>-270&&angle<-180)) {Quadrant = 3;deg = 180-angle};
-        if((angle<270&&angle>180)||(angle>-180&&angle<-90)) {Quadrant = 4;deg = angle-180};
-        if((angle<360&&angle>270)||(angle>-90&&angle<0)) {Quadrant = 1;deg = 360-angle};
-    
-    radius =  Quadrant===1||Quadrant===2?222:-222;
-    x = radius*Math.sin(deg);
-    y = radius*Math.cos(deg);
-    console.log(x+' '+y)
+        if(angle<360&&angle>270){Quadrant = 4;deg = 90-(360-angle)};
+        if(angle<270&&angle>180){Quadrant = 1;deg = (360-angle)-90};
+        if(angle<180&&angle>90){Quadrant = 2;deg = 270-(360-angle)};
+        if(angle<90&&angle>0){Quadrant = 3;deg = (360-angle)-270};
+
+    x = radius*Math.cos((deg/360)*2*Math.PI);
+    y = radius*Math.sin((deg/360)*2*Math.PI);
+
+    x = Quadrant===1||Quadrant===4?x:-x;
+    y = Quadrant===1||Quadrant===2?y:-y;
+
     list = [x,y];
     }
     return list;
 }
+
+const coinPosition = [];
+
 cc.Class({
     extends: cc.Component,
     properties: {
@@ -53,11 +56,38 @@ cc.Class({
                 angle-=360;
                 if(angle>0.0&&angle<360) break
             }
+        };
+        let C = Math.PI*this.bird.width;
+        let A = 78/C;
+        let B = 2*Math.PI*A;
+        let T = B/(Math.PI/180);
+        let MIN = coinPosition.findIndex((item)=>{
+            return angle>item;
+        });
+        let MAX = coinPosition.findIndex((item)=>{
+            return angle<item;
+        })
+        if(coinPosition.length===0){
+            coinPosition.push(angle);
+            coinPosition.sort((a,b)=>{return a-b});
+            let node = cc.instantiate(this.fuck);
+            node.parent = this.node;
+            let list = position(angle);
+            node.setPosition(list[0],list[1]);
+        }else if(coinPosition.length===1&&coinPosition[0]+20<angle&&coinPosition[0]-20){
+
+        }else if(coinPosition.length>=2&&coinPosition[MIN]+40<coinPosition[MAX]&&angle-coinPosition[MIN]>20&&coinPosition[MAX]-angle>20){
+            console.log(coinPosition)
+            coinPosition.push(angle);
+            coinPosition.sort((a,b)=>{return a-b});
+            let node = cc.instantiate(this.fuck);
+            node.parent = this.node;
+            let list = position(angle);
+            node.setPosition(list[0],list[1]);
+        }else{
+            console.log(angle)
+            console.log(coinPosition)
         }
-        let node = cc.instantiate(this.fuck);
-        node.parent = this.node;
-        let list = position(angle);
-        node.setPosition(list[0],list[1]);
     },
     start () {
 

@@ -28,11 +28,11 @@ cc.Class({
         // cc.director.getCollisionManager().enabledDrawBoundingBox = true;
         window._global = {};
         let action = [];
-        // for(let i = 0;i<100;i++){
-        //     action.push(cc.rotateBy(this.createRandom(0,2),this.createRandom(-360,360)))
-        // }
-        // let list = cc.sequence(...action)
-        // this.bird.runAction(list);
+        for(let i = 0;i<100;i++){
+            action.push(cc.rotateBy(this.createRandom(0,2),this.createRandom(-360,360)))
+        }
+        let list = cc.sequence(...action)
+        this.bird.runAction(list);
     },
 
     start () {
@@ -40,18 +40,18 @@ cc.Class({
     },
 
     update (dt) {
-        let {angle} = this.bird;
-        if(angle<0.0){
-            while(1){
-                angle+=360;
-                if(angle>0.0&&angle<360) break
-            }
-        }else if(angle>360){
-            while(1){
-                angle-=360;
-                if(angle>0.0&&angle<360) break
-            }
-        }
-        // console.log(angle)
+        // let {angle} = this.bird;
+        // if(angle<0.0){
+        //     while(1){
+        //         angle+=360;
+        //         if(angle>0.0&&angle<360) break
+        //     }
+        // }else if(angle>360){
+        //     while(1){
+        //         angle-=360;
+        //         if(angle>0.0&&angle<360) break
+        //     }
+        // }
+        // // console.log(angle)
     },
 });
