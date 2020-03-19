@@ -22,14 +22,20 @@ cc.Class({
     createRandom(min,max){
         return Math.random() * (max - min) + min;
     },
+    createRotar(){
+        let num = this.createRandom(300,360);
+        let a = this.createRandom(0,2);
+        let rotar = a>1?num:num*-1;
+        return rotar
+    },
     onLoad () {
         cc.director.getCollisionManager().enabled = true;
         // cc.director.getCollisionManager().enabledDebugDraw = true;
         // cc.director.getCollisionManager().enabledDrawBoundingBox = true;
         window._global = {};
         let action = [];
-        for(let i = 0;i<100;i++){
-            action.push(cc.rotateBy(this.createRandom(0,2),this.createRandom(-360,360)))
+        for(let i = 0;i<1000;i++){
+            action.push(cc.rotateBy(this.createRandom(2,3),this.createRotar()))
         }
         let list = cc.sequence(...action)
         this.bird.runAction(list);
